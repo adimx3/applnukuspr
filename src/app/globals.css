@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+@theme {
+  --color-gold-400: #fbbf24;
+  --color-gold-500: #ffa500;
+  --color-gold-600: #f59e0b;
+  --color-background: #0f0f11;
+  --color-foreground: #ededed;
+}
+
+:root {
+  --background: #0f0f11;
+  --foreground: #ededed;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Custom scrollbar to match dark theme */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0f0f11;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffa500;
+}
+
+/* Chrome autofill blocker hack */
+.security-disc {
+  -webkit-text-security: disc;
+}
