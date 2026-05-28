@@ -8,7 +8,7 @@ export async function GET() {
     });
     
     // Parse colors from JSON string
-    const parsedProducts = products.map(p => ({
+    const parsedProducts = products.map((p: any) => ({
       ...p,
       colors: JSON.parse(p.colors)
     }));
