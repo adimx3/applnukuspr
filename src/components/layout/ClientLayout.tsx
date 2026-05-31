@@ -4,21 +4,26 @@ import { Sidebar } from "@/components/layout/Sidebar";
 import { useAuthStore } from "@/store/useAuthStore";
 import { AuthModal } from "@/components/auth/AuthModal";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { useProductStore } from "@/store/useProductStore";
-import { useMyOrdersStore } from "@/store/useMyOrdersStore";
+import { Menu, X } from "lucide-react";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, openAuthModal, validateSession } = useAuthStore();
   const { items } = useCartStore();
   const { fetchProducts } = useProductStore();
-  const { orderIds } = useMyOrdersStore();
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Run once on mount to check if the login is older than 30 days and fetch products
   useEffect(() => {
     validateSession();
     fetchProducts();
+  }, []);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setIsMobileSidebarOpen(false);
   }, []);
 
   return (
@@ -28,25 +33,18 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         <div className="fixed top-0 right-0 p-4 flex gap-2 z-50 items-center">
           <button
             onClick={() => openAuthModal('login')}
-            className="px-4 py-2 text-sm font-bold uppercase bg-[#1a1a1a] hover:bg-[#222] text-white rounded"
+            className="px-3 py-2 text-xs sm:text-sm font-bold uppercase bg-[#1a1a1a] hover:bg-[#222] text-white rounded"
           >
             KIRISH
           </button>
           <button
             onClick={() => openAuthModal('register')}
-            className="px-4 py-2 text-sm font-bold uppercase bg-[#ffa500] hover:bg-[#ffb933] text-black rounded"
+            className="px-3 py-2 text-xs sm:text-sm font-bold uppercase bg-[#ffa500] hover:bg-[#ffb933] text-black rounded hidden sm:block"
           >
-            RO‘YXATDAN O‘TISH
+            RO'YXATDAN O'TISH
           </button>
-          {orderIds.length > 0 && (
-            <Link href="/my-orders" className="relative">
-              <button className="px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-white rounded font-bold uppercase text-sm border border-[#333] transition-colors">
-                Mening Buyurtmalarim
-              </button>
-            </Link>
-          )}
-          <Link href="/cart" className="relative ml-2">
-            <button className="px-4 py-2 bg-[#333] hover:bg-[#444] text-white rounded">
+          <Link href="/cart" className="relative ml-1">
+            <button className="px-3 py-2 bg-[#333] hover:bg-[#444] text-white rounded">
               🛒
             </button>
             {items.length > 0 && (
@@ -57,11 +55,55 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           </Link>
         </div>
       )}
+
+      {/* Mobile top bar – visible only when authenticated */}
+      {isAuthenticated && (
+        <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-[#111] border-b border-[#222] flex items-center justify-between px-4 z-50">
+          <button
+            onClick={() => setIsMobileSidebarOpen(true)}
+            className="p-2 text-gray-400 hover:text-white transition-colors"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
+          <span className="text-white font-serif font-bold tracking-widest text-lg">APPL NUKUS</span>
+          <Link href="/cart" className="relative p-2">
+            <span className="text-xl">🛒</span>
+            {items.length > 0 && (
+              <span className="absolute top-0 right-0 bg-red-600 text-[10px] w-4 h-4 flex items-center justify-center rounded-full text-white font-bold">
+                {items.reduce((sum, i) => sum + i.quantity, 0)}
+              </span>
+            )}
+          </Link>
+        </div>
+      )}
+
+      {/* Mobile sidebar overlay */}
+      {isAuthenticated && isMobileSidebarOpen && (
+        <div className="lg:hidden fixed inset-0 z-[60]">
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm" 
+            onClick={() => setIsMobileSidebarOpen(false)} 
+          />
+          <div className="absolute left-0 top-0 h-full w-72 animate-slide-in">
+            <button
+              onClick={() => setIsMobileSidebarOpen(false)}
+              className="absolute top-5 right-4 z-10 p-2 text-gray-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <Sidebar onNavigate={() => setIsMobileSidebarOpen(false)} />
+          </div>
+        </div>
+      )}
       
       <div className="flex min-h-screen">
-        {/* Show sidebar only after authentication */}
-        {isAuthenticated && <Sidebar />}
-        <main className={`flex-1 relative ${isAuthenticated ? "ml-72" : ""}`}>
+        {/* Show sidebar only after authentication – hidden on mobile */}
+        {isAuthenticated && (
+          <div className="hidden lg:block">
+            <Sidebar />
+          </div>
+        )}
+        <main className={`flex-1 relative ${isAuthenticated ? "lg:ml-72 mt-16 lg:mt-0" : ""}`}>
           {children}
         </main>
       </div>

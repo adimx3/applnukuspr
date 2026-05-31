@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AppleLogo } from "../ui/AppleLogo";
-import { Home, ShoppingBag, ShoppingCart, MapPin, Phone, Info, LogOut, LayoutDashboard, PackagePlus, Package } from "lucide-react";
+import { Home, ShoppingBag, ShoppingCart, MapPin, Phone, Info, LogOut, LayoutDashboard, PackagePlus } from "lucide-react";
 import clsx from "clsx";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useCartStore } from "@/store/useCartStore";
@@ -12,7 +12,6 @@ const baseNavigation = [
   { name: "Bosh Sahifa", href: "/", icon: Home },
   { name: "Katalog / Shop", href: "/shop", icon: ShoppingBag },
   { name: "Savatcha", href: "/cart", icon: ShoppingCart },
-  { name: "Mening buyurtmalarim", href: "/my-orders", icon: Package },
   { name: "Filiallar", href: "/filials", icon: MapPin },
   { name: "Biz Haqimizda", href: "/about", icon: Info },
   { name: "Aloqa", href: "/contact", icon: Phone },
@@ -24,7 +23,11 @@ const adminNavigation = [
   { name: "Buyurtmalar", href: "/admin/orders", icon: ShoppingBag },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  onNavigate?: () => void;
+}
+
+export function Sidebar({ onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const { isAuthenticated, login, logout, role } = useAuthStore();
   const { totalItems } = useCartStore();
@@ -35,7 +38,7 @@ export function Sidebar() {
     <div className="w-72 h-screen bg-[#111] border-r border-[#222] flex flex-col fixed left-0 top-0 text-gray-300 z-50">
       {/* Brand Logo */}
       <div className="h-28 flex items-center px-6 border-b border-[#222]">
-        <Link href="/" className="flex items-center gap-4 group">
+        <Link href="/" className="flex items-center gap-4 group" onClick={onNavigate}>
           <div className="w-12 h-12 bg-[#ffa500] rounded-xl flex items-center justify-center text-black shadow-[0_0_15px_rgba(255,165,0,0.3)] group-hover:shadow-[0_0_25px_rgba(255,165,0,0.6)] transition-all duration-300">
             <AppleLogo className="w-7 h-7 mb-0.5" />
           </div>
@@ -96,6 +99,7 @@ export function Sidebar() {
                 <Link
                   key={item.name}
                   href={item.href}
+                  onClick={onNavigate}
                   className={clsx(
                     "flex items-center gap-4 px-5 py-3.5 rounded-xl transition-all duration-300",
                     isActive 
