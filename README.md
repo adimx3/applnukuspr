@@ -147,4 +147,4 @@ npx prisma studio              # DB ni vizual ko'rish
 ```
 
 ---
-*Apple Nukus © 2024 — Antigravity AI coding assistant yordamida yaratildi.*
+
