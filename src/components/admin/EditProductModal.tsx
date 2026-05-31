@@ -122,7 +122,7 @@ export function EditProductModal({ isOpen, onClose, product }: EditProductModalP
                   <img src={imagePreview} alt="" className="w-full h-full object-contain p-1" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-white tracking-wide truncate pr-4">{product.name}</h2>
+                  <h2 className="text-xl font-bold text-white tracking-wide break-all pr-4">{product.name}</h2>
                   <p className="text-xs text-gray-500">Mahsulot ma&apos;lumotlarini tahrirlash</p>
                 </div>
               </div>

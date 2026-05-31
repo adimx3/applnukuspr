@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { useProductStore } from "@/store/useProductStore";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Home, ShoppingBag, ShoppingCart, Package } from "lucide-react";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, openAuthModal, validateSession } = useAuthStore();
@@ -103,9 +103,37 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             <Sidebar />
           </div>
         )}
-        <main className={`flex-1 relative ${isAuthenticated ? "lg:ml-72 mt-16 lg:mt-0" : ""}`}>
+        <main className={`flex-1 relative ${isAuthenticated ? "lg:ml-72 mt-16 lg:mt-0" : ""} overflow-y-auto pb-20`}>
           {children}
         </main>
+        {/* Mobile Bottom Navigation */}
+        {isAuthenticated && (
+          <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-[#111] border-t border-[#222] flex justify-between items-center px-4 py-2 z-50">
+            <Link href="/" className="flex flex-col items-center text-gray-400 hover:text-[#ffa500]">
+              <Home className="w-5 h-5" />
+              <span className="text-xs">Bosh</span>
+            </Link>
+            <Link href="/shop" className="flex flex-col items-center text-gray-400 hover:text-[#ffa500]">
+              <ShoppingBag className="w-5 h-5" />
+              <span className="text-xs">Shop</span>
+            </Link>
+            {orderIds.length > 0 && (
+              <Link href="/my-orders" className="flex flex-col items-center text-gray-400 hover:text-[#ffa500]">
+                <Package className="w-5 h-5" />
+                <span className="text-xs">Buyurtmalar</span>
+              </Link>
+            )}
+            <Link href="/cart" className="relative flex flex-col items-center text-gray-400 hover:text-[#ffa500]">
+              <ShoppingCart className="w-5 h-5" />
+              {items.length > 0 && (
+                <span className="absolute -top-1 -right-2 bg-red-600 text-xs w-4 h-4 flex items-center justify-center rounded-full text-white font-bold">
+                  {items.reduce((sum, i) => sum + i.quantity, 0)}
+                </span>
+              )}
+              <span className="text-xs">Savat</span>
+            </Link>
+          </div>
+        )}
       </div>
       <AuthModal />
     </>

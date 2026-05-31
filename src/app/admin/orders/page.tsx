@@ -132,7 +132,7 @@ export default function AdminOrdersPage() {
                     <td className="p-4">
                       <div className="font-bold text-white">{order.customerName}</div>
                       <div className="text-xs text-gray-400">{order.customerPhone}</div>
-                      <div className="text-xs text-gray-500 max-w-[200px] truncate">{order.customerAddress}</div>
+                      <div className="text-xs text-gray-500 max-w-[200px] break-all" >{order.customerAddress}</div>
                     </td>
                     <td className="p-4">
                       <div className="font-mono font-bold text-blue-400">{order.totalAmount}</div>
