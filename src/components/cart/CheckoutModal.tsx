@@ -5,6 +5,7 @@ import { X, CheckCircle2, CreditCard, Banknote, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSettingsStore } from "@/store/useSettingsStore";
 import { useCartStore } from "@/store/useCartStore";
+import { useMyOrdersStore } from "@/store/useMyOrdersStore";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -16,6 +17,7 @@ interface CheckoutModalProps {
 export function CheckoutModal({ isOpen, onClose, totalAmount, onConfirm }: CheckoutModalProps) {
   const { cardNumber } = useSettingsStore();
   const { items } = useCartStore();
+  const { addOrderId } = useMyOrdersStore();
   
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -47,6 +49,12 @@ export function CheckoutModal({ isOpen, onClose, totalAmount, onConfirm }: Check
       });
 
       if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      
+      // Save order ID to local storage
+      if (data && data.id) {
+        addOrderId(data.id);
+      }
 
       setStatus('success');
       setTimeout(() => {

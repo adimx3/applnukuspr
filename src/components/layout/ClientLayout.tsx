@@ -36,7 +36,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           >
             RO‘YXATDAN O‘TISH
           </button>
-          <Link href="/cart" className="relative">
+          <Link href="/my-orders" className="relative">
+            <button className="px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-white rounded font-bold uppercase text-sm border border-[#333] transition-colors">
+              Mening Buyurtmalarim
+            </button>
+          </Link>
+          <Link href="/cart" className="relative ml-2">
             <button className="px-4 py-2 bg-[#333] hover:bg-[#444] text-white rounded">
               🛒
             </button>

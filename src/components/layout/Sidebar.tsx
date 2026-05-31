@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AppleLogo } from "../ui/AppleLogo";
-import { Home, ShoppingBag, ShoppingCart, MapPin, Phone, Info, LogOut, LayoutDashboard, PackagePlus } from "lucide-react";
+import { Home, ShoppingBag, ShoppingCart, MapPin, Phone, Info, LogOut, LayoutDashboard, PackagePlus, Package } from "lucide-react";
 import clsx from "clsx";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useCartStore } from "@/store/useCartStore";
@@ -12,6 +12,7 @@ const baseNavigation = [
   { name: "Bosh Sahifa", href: "/", icon: Home },
   { name: "Katalog / Shop", href: "/shop", icon: ShoppingBag },
   { name: "Savatcha", href: "/cart", icon: ShoppingCart },
+  { name: "Mening buyurtmalarim", href: "/my-orders", icon: Package },
   { name: "Filiallar", href: "/filials", icon: MapPin },
   { name: "Biz Haqimizda", href: "/about", icon: Info },
   { name: "Aloqa", href: "/contact", icon: Phone },
