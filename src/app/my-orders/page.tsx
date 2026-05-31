@@ -5,9 +5,11 @@ import { useMyOrdersStore } from "@/store/useMyOrdersStore";
 import { useProductStore } from "@/store/useProductStore";
 import { Package, Clock, CheckCircle2, XCircle, ArrowLeft, Loader2, Calendar } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function MyOrdersPage() {
+  const router = useRouter();
   const { orderIds } = useMyOrdersStore();
   const { products, fetchProducts } = useProductStore();
   const [orders, setOrders] = useState<any[]>([]);
@@ -90,10 +92,13 @@ export default function MyOrdersPage() {
 
       <div className="max-w-5xl mx-auto relative z-10">
         <div className="flex items-center gap-4 mb-8">
-          <Link href="/shop" className="p-2 bg-[#161616] border border-[#333] hover:border-[#ffa500] hover:text-[#ffa500] rounded-xl text-gray-400 transition-all">
-            <ArrowLeft className="w-5 h-5" />
-          </Link>
-          <h1 className="text-3xl md:text-4xl font-serif font-bold text-white tracking-wider">Mening buyurtmalarim</h1>
+          <button 
+            onClick={() => router.back()} 
+            className="flex items-center gap-2 px-4 py-2 bg-[#161616] border border-[#333] hover:border-[#ffa500] hover:text-[#ffa500] rounded-xl text-gray-400 transition-all font-bold text-sm uppercase tracking-wider"
+          >
+            <ArrowLeft className="w-5 h-5" /> Orqaga
+          </button>
+          <h1 className="text-3xl md:text-4xl font-serif font-bold text-white tracking-wider hidden sm:block">Mening buyurtmalarim</h1>
         </div>
 
         {isLoading ? (

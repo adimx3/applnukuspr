@@ -7,11 +7,13 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { useProductStore } from "@/store/useProductStore";
+import { useMyOrdersStore } from "@/store/useMyOrdersStore";
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, openAuthModal, validateSession } = useAuthStore();
   const { items } = useCartStore();
   const { fetchProducts } = useProductStore();
+  const { orderIds } = useMyOrdersStore();
 
   // Run once on mount to check if the login is older than 30 days and fetch products
   useEffect(() => {
@@ -36,11 +38,13 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
           >
             RO‘YXATDAN O‘TISH
           </button>
-          <Link href="/my-orders" className="relative">
-            <button className="px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-white rounded font-bold uppercase text-sm border border-[#333] transition-colors">
-              Mening Buyurtmalarim
-            </button>
-          </Link>
+          {orderIds.length > 0 && (
+            <Link href="/my-orders" className="relative">
+              <button className="px-4 py-2 bg-[#1a1a1a] hover:bg-[#222] text-white rounded font-bold uppercase text-sm border border-[#333] transition-colors">
+                Mening Buyurtmalarim
+              </button>
+            </Link>
+          )}
           <Link href="/cart" className="relative ml-2">
             <button className="px-4 py-2 bg-[#333] hover:bg-[#444] text-white rounded">
               🛒
